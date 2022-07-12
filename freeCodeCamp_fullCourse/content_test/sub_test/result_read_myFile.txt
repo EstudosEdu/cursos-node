@@ -1,0 +1,2 @@
+Novo Resultado do que foi lido no arquivo :Hello World!
+Novo Resultado do que foi lido no arquivo :Hello World!
