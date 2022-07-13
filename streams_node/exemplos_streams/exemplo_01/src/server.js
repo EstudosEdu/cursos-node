@@ -1,7 +1,8 @@
 import http from 'http';
 import { pipeline, Readable, Transform, Writable } from 'stream';
 import { promisify } from 'util';
-import { randomUUID } from 'crypto'
+import { randomUUID } from 'crypto';
+import { createWriteStream } from 'fs'
 
 async function handler(req, res){
     const pipelineAsync = promisify(pipeline);
@@ -38,7 +39,10 @@ async function handler(req, res){
     await pipelineAsync(
         readableStream,
         transformStream,
-        res //resposta para o usuario
+        //salvando dados sobre demanda em um arquivo .txt
+        createWriteStream('./log.txt'),
+        //resposta para o usuario que fazer resquest na API
+        // res
     )
 
 }
