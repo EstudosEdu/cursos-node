@@ -2,10 +2,9 @@ import { Router , Request, Response } from 'express';
 import ProductController from './controller/ProductController';
 const routes = Router();
 
-routes.get('/products', (req: Request, res:Response) => {
-    return res.status(200).json({message: 'products on'});
-});
-
+routes.get('/products', ProductController.readAll);
 routes.post('/product', ProductController.create);
+routes.put('/product', ProductController.update);
+routes.delete('/product', ProductController.delete);
 
 export default routes;

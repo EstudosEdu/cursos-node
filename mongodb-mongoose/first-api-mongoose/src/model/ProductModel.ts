@@ -1,13 +1,13 @@
-import mongoose, { Model, ObjectId, Document, Schema } from "mongoose";
+import mongoose, { ObjectId, Document, Schema } from "mongoose";
 
 /*link da solução abaixo: https://github.com/Automattic/mongoose/issues/10623 */
 interface Product extends Document<ObjectId>{
-  id: ObjectId[];
+  id: ObjectId;
   name: String;
 }
 
 const ProductSchema = new Schema<Product>({
-  id: {type: [Schema.Types.ObjectId], required: true},
+  id: {type: Schema.Types.ObjectId},
   name: {type: String, required: true}
 });
 
