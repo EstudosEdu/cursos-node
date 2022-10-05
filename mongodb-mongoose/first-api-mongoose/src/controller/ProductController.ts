@@ -1,14 +1,16 @@
 import ProductModel from "../model/ProductModel";
 import { Response, Request } from 'express';
 
+type ReqRes = Response | Request;
+
 interface ProductControllerInterface{
-    create: Function;
-    readAll: Function;
-    update: Function;
-    delete: Function;
+    create(req: ReqRes, res: ReqRes): Promise<Response>;
+    readAll(req: ReqRes, res: ReqRes): Promise<Response>;
+    update(req: ReqRes, res: ReqRes): Promise<Response>;
+    delete(req: ReqRes, res: ReqRes): Promise<Response>;
 }
 
-class ProductController<ProductControllerInterface> {
+class ProductController implements ProductControllerInterface {
     async create(req: Request, res: Response){
         try{
             const createdProduct = await ProductModel.create(req.body);
