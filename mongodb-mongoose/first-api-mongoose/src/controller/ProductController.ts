@@ -8,6 +8,7 @@ interface ProductControllerInterface{
     readAll(req: ReqRes, res: ReqRes): Promise<Response>;
     update(req: ReqRes, res: ReqRes): Promise<Response>;
     delete(req: ReqRes, res: ReqRes): Promise<Response>;
+    teste(req: ReqRes, res: ReqRes): Promise<Response>;
 }
 
 class ProductController implements ProductControllerInterface {
@@ -53,6 +54,23 @@ class ProductController implements ProductControllerInterface {
             }
 
             return res.status(200).json({message: 'Product Deleted'});
+        }catch(err){
+            console.log(err);
+            return res.status(500).json({Error: err});
+        }
+    }
+
+    async teste(req: Request, res: Response){ //essa função retorna o numero de produtos cadatrados com um preço maior que o informado.
+        const priceSelect = req.params.price;
+        try{
+            console.log(priceSelect);
+
+            const productDelete = await ProductModel.aggregate([
+                {$match: {price: {$gt: +priceSelect}}},
+                {$group: {_id: '$_id', count: {$sum: 1}}} // $_id representa o campo _id de cada dado da tabela de produtos.
+            ])
+
+            return res.status(200).json(productDelete);
         }catch(err){
             console.log(err);
             return res.status(500).json({Error: err});
