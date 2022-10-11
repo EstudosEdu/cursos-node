@@ -1,8 +1,10 @@
 import http from 'http';
-import { Readable } from 'stream';
+import { Readable, Writable } from 'stream';
 import  { randomUUID } from 'crypto';
 
 //função geradora, para saber mais sobre a mesma estude sobre GENERETORS em Node.js
+const sla = [];
+
 function * run (){
     for(let i = 0; i <= 99; i++){
         const data = {
@@ -41,7 +43,6 @@ async function handler(req, res){
     */
     readable
         .pipe(res);
-
 }
 
 http.createServer(handler)
