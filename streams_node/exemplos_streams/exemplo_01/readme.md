@@ -1,0 +1,1 @@
+Utilizando pipeline e promisify pela primeira vez!

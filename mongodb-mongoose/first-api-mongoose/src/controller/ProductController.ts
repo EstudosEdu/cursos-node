@@ -1,14 +1,17 @@
 import ProductModel from "../model/ProductModel";
 import { Response, Request } from 'express';
 
+type ReqRes = Response | Request;
+
 interface ProductControllerInterface{
-    create: Function;
-    readAll: Function;
-    update: Function;
-    delete: Function;
+    create(req: ReqRes, res: ReqRes): Promise<Response>;
+    readAll(req: ReqRes, res: ReqRes): Promise<Response>;
+    update(req: ReqRes, res: ReqRes): Promise<Response>;
+    delete(req: ReqRes, res: ReqRes): Promise<Response>;
+    teste(req: ReqRes, res: ReqRes): Promise<Response>;
 }
 
-class ProductController<ProductControllerInterface> {
+class ProductController implements ProductControllerInterface {
     async create(req: Request, res: Response){
         try{
             const createdProduct = await ProductModel.create(req.body);
@@ -51,6 +54,23 @@ class ProductController<ProductControllerInterface> {
             }
 
             return res.status(200).json({message: 'Product Deleted'});
+        }catch(err){
+            console.log(err);
+            return res.status(500).json({Error: err});
+        }
+    }
+
+    async teste(req: Request, res: Response){ //essa função retorna o numero de produtos cadatrados com um preço maior que o informado.
+        const priceSelect = req.params.price;
+        try{
+            console.log(priceSelect);
+
+            const productDelete = await ProductModel.aggregate([
+                {$match: {price: {$gt: +priceSelect}}},
+                {$group: {_id: '$_id', count: {$sum: 1}}} // $_id representa o campo _id de cada dado da tabela de produtos.
+            ])
+
+            return res.status(200).json(productDelete);
         }catch(err){
             console.log(err);
             return res.status(500).json({Error: err});
